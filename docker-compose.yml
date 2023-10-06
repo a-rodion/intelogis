@@ -1,0 +1,7 @@
+version: '3'
+services:
+  app:
+    build: .
+    command: sh -c "composer install --quiet --no-interaction -d /app && php /app/bin/calculator.php"
+    volumes:
+      - .:/app

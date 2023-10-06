@@ -1,0 +1,22 @@
+{
+  "name": "a-rodion/intelogis",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "GPL-3.0-only",
+  "type": "project",
+  "authors": [
+    {
+      "name": "rodion",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "php": "~7.4",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "src"
+    }
+  }
+}
