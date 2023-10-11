@@ -3,33 +3,39 @@ declare(strict_types=1);
 
 namespace app\ShippingServices;
 
-use app\ShiipingCalculateResult;
+use app\ShippingCalculateResult;
 use app\ShippingService;
+use app\ShippingServices\Response\FirstShippingServiceResponse;
 use DateTime;
 use DateTimeImmutable;
 
 class FastShippingService implements ShippingService
 {
-    public function calculate(string $source, string $target, float $weight): ShiipingCalculateResult
+    public function calculate(string $source, string $target, float $weight): ShippingCalculateResult
     {
-        $result = new ShiipingCalculateResult();
+        $response = $this->request($source, $target, $weight);
+        $date = ($response->days !== null)
+            ? date_modify(new DateTime(), "+$response->days day")->format('Y-m-d')
+            : null;
 
-        $result->price = random_int(1000, 1500);
-        $days = random_int(1, 3);
-        $result->date = date_modify(new DateTime(), "+$days day")->format('Y-m-d');
-        $result->error = '';
-
-        return $result;
+        return new ShippingCalculateResult($response->error, $response->price, $date);
     }
 
-    public function request()
+    protected function request(string $source, string $target, float $weight): FirstShippingServiceResponse
     {
         $now = new DateTimeImmutable();
         $hour = (int) $now->format('H');
-        if ($hour >= 18) {
-            $result->error = 'Заявки не принимаются';
 
-            return $result;
+        $response = new FirstShippingServiceResponse();
+        if ($hour >= 18) {
+            $response->error = 'Заявки не принимаются';
+
+            return $response;
         }
+        $response->price = random_int(1000, 1500);
+        $response->days = random_int(1, 3);
+        $response->error = '';
+
+        return $response;
     }
 }

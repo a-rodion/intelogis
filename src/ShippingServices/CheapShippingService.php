@@ -3,35 +3,37 @@ declare(strict_types=1);
 
 namespace app\ShippingServices;
 
-use app\ShiipingCalculateResult;
+use app\ShippingCalculateResult;
 use app\ShippingService;
+use app\ShippingServices\Response\CheapShippingServiceResponse;
+use DateTime;
 
 class CheapShippingService implements ShippingService
 {
+    protected float $basePrice;
+
     public function __construct(float $basePrice)
     {
         $this->basePrice = $basePrice;
     }
 
-    public function calculate(string $source, string $target, float $weight): ShiipingCalculateResult
+    public function calculate(string $source, string $target, float $weight): ShippingCalculateResult
     {
         $response = $this->request($source, $target, $weight);
-        $result = new ShiipingCalculateResult();
-        $result->price = $this->basePrice * $response['coefficient'];
-        $result->date = $response['date'];
-        $result->error = $response['error'];
+        $price = $this->basePrice * $response->coefficient;
 
-        return $result;
+        return new ShippingCalculateResult($response->error, $price, $response->date);
     }
 
-    public function request(string $source, string $target, float $weight): array
+    protected function request(string $source, string $target, float $weight): CheapShippingServiceResponse
     {
         $shippingDays = random_int(1, 5);
-        $response = [
-            'coefficient' => random_int(1, 2) + random_int(0, 9) / 10,
-            'date' => date_modify(new \DateTime(), "+$shippingDays day")->format('Y-m-d'),
-            'error' => '',
-        ];
+
+        $response = new CheapShippingServiceResponse();
+        $response->coefficient = random_int(1, 2) + random_int(0, 9) / 10;
+        $response->date = date_modify(new DateTime(), "+$shippingDays day")
+            ->format('Y-m-d');
+        $response->error = '';
 
         return $response;
     }

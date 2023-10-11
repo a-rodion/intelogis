@@ -5,5 +5,5 @@ namespace app;
 
 interface ShippingService
 {
-    public function calculate(string $source, string $target, float $weight): ShiipingCalculateResult;
+    public function calculate(string $source, string $target, float $weight): ShippingCalculateResult;
 }

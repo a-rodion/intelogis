@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace app;
+namespace app\ShippingServices\Response;
 
-class ShiipingCalculateResult
+class BadShippingServiceResponse
 {
     public float $price;
     public string $date;

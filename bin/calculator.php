@@ -24,10 +24,9 @@ while ($i < 3) {
         /** @var \app\ShippingService $service */
         $service = $serviceLocator->get($serviceClass);
         $calculateResult = $service->calculate($source, $target, $weight);
-        echo get_class($service) . ' | ' .json_encode($calculateResult) . PHP_EOL;
+        echo get_class($service) . ' | ' .json_encode($calculateResult, JSON_UNESCAPED_UNICODE) . PHP_EOL;
     }
     echo '------------------------------------------' . PHP_EOL;
 
     $i++;
 }
-
