@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace app;
+namespace app\ShippingServices\Calculator;
 
-interface ShippingService
+use app\ShippingCalculateResult;
+
+interface ServiceCalculator
 {
     public function calculate(string $source, string $target, float $weight): ShippingCalculateResult;
 }

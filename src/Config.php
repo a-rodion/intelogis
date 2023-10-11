@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace app;
 
-use app\ShippingServices\BadShippingService;
-use app\ShippingServices\FastShippingService;
-use app\ShippingServices\CheapShippingService;
+use app\ShippingServices\Calculator\BadServiceCalculator;
+use app\ShippingServices\Calculator\CheapServiceCalculator;
+use app\ShippingServices\Calculator\FastServiceCalculator;
+use app\ShippingServices\Provider\BadServiceProvider;
+use app\ShippingServices\Provider\CheapServiceProvider;
+use app\ShippingServices\Provider\FastServiceProvider;
 
 class Config
 {
@@ -16,14 +19,21 @@ class Config
     {
         return [
             'services' => [
-                FastShippingService::class,
-                CheapShippingService::class,
-                BadShippingService::class,
+                FastServiceCalculator::class,
+                CheapServiceCalculator::class,
+                BadServiceCalculator::class,
             ],
             'serviceLocator' => [
-                FastShippingService::class => new FastShippingService(),
-                CheapShippingService::class => new CheapShippingService(150),
-                BadShippingService::class => new BadShippingService(20),
+                FastServiceCalculator::class => new FastServiceCalculator(
+                    new FastServiceProvider(18)
+                ),
+                CheapServiceCalculator::class => new CheapServiceCalculator(
+                    new CheapServiceProvider(),
+                    150
+                ),
+                BadServiceCalculator::class => new BadServiceCalculator(
+                    new BadServiceProvider(20)
+                ),
             ],
 //            'tarifs' => [
 //                FastShippingService::class => [
